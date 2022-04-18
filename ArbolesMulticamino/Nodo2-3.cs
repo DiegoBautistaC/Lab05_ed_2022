@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace ArbolesMulticamino
 {
-    class Nodo2_3
+    public class Nodo2_3 <T>
     {
+        public T Menor { get; set; }
+        public T Mayor { get; set; }
+
+        public Nodo2_3<T> Izquierdo;
+        public Nodo2_3<T> Medio;
+        public Nodo2_3<T> Derecho;
+
+        Nodo2_3()
+        {
+            Menor = default(T);
+            Mayor = default(T);
+            Izquierdo = null;
+            Derecho = null;
+            Medio = null;
+        }
+
     }
 }
