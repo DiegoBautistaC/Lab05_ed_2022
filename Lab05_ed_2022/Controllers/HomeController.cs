@@ -90,7 +90,7 @@ namespace Lab05_ed_2022.Controllers
                     while (csv.Read())
                     {
                         var carro = csv.GetRecord<CarroModel>();
-                        Data.Instance.CarroPlaca_Arbol23.Insertar(carro);
+                        Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
                         
                     }
                 }

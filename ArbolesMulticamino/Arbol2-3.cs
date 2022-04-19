@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArbolesMulticamino
 {
-    public class Arbol2_3<T>
+    public class Arbol2_3<T> : IEnumerable<T>
     {
         Nodo2_3<T> Raiz;
 
@@ -264,6 +265,47 @@ namespace ArbolesMulticamino
             }
 
             return raizOverflow;
+        }
+
+        void Leer(Nodo2_3 <T> raizActual, ref Queue<T> cola)
+        {
+            if (raizActual.Izquierdo == null)
+            {
+                cola.Enqueue(raizActual.Menor);
+                if (raizActual.MayorLleno)
+                {
+                    cola.Enqueue(raizActual.Mayor);
+                }
+            }
+            else
+            {
+                this.Leer(raizActual.Izquierdo, ref cola);
+                cola.Enqueue(raizActual.Menor);
+                this.Leer(raizActual.Medio, ref cola);
+                if (raizActual.MayorLleno)
+                {
+                    cola.Enqueue(raizActual.Mayor);
+                    this.Leer(raizActual.Derecho, ref cola);
+                }
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            if (this.Raiz != null)
+            {
+                var cola = new Queue<T>();
+                this.Leer(this.Raiz, ref cola);
+                while (!(cola.Count == 0))
+                {
+                    yield return cola.Dequeue();
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
     }
 
