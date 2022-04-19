@@ -7,6 +7,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ArbolesMulticamino;
+using CsvHelper;
+using System.Globalization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.Diagnostics;
+using Lab05_ed_2022.Controllers;
+using Lab05_ed_2022.Models;
+using Lab05_ed_2022.Helpers;
+using System.IO;
+//using Lab05_ed_2022.Helpers
 
 namespace Lab05_ed_2022.Controllers
 {
@@ -59,5 +69,39 @@ namespace Lab05_ed_2022.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public IActionResult CargarArchivo2_3(IFormFile file, [FromServices] IHostingEnvironment hosting)
+        {
+            if (file != null)
+            {
+               
+                string fileName = $"{hosting.WebRootPath}\\Files\\{file.FileName}";
+                using (FileStream streamFile = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(streamFile);
+                    streamFile.Flush();
+                }
+                var path = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Files"}" + "\\" + file.FileName;
+                using (var reader = new StreamReader(path))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    while (csv.Read())
+                    {
+                        var carro = csv.GetRecord<CarroModel>();
+                        Data.Instance.CarroPlaca_Arbol23.Insertar(carro);
+                        
+                    }
+                }
+               
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
     }
 }
