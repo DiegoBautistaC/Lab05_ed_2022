@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Diagnostics;
 using Lab05_ed_2022.Controllers;
 using Lab05_ed_2022.Models;
+using Lab05_ed_2022.Helpers;
 using System.IO;
 //using Lab05_ed_2022.Helpers
 
@@ -89,7 +90,7 @@ namespace Lab05_ed_2022.Controllers
                     while (csv.Read())
                     {
                         var carro = csv.GetRecord<CarroModel>();
-                        Data.Instance.CarroPlaca2_3.Insertar(carro);
+                        Data.Instance.CarroPlaca_Arbol23.Insertar(carro);
                         
                     }
                 }
