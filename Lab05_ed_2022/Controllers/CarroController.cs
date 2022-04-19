@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Lab05_ed_2022.Helpers;
+using Lab05_ed_2022.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,54 @@ namespace Lab05_ed_2022.Controllers
         // GET: CarroController
         public ActionResult Index()
         {
-            return View();
+            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 366452,
+                Color = "Rojo",
+                Propietario = "Propietario1",
+                Latitud = 54,
+                Longitud = 145
+            });
+            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 123456,
+                Color = "Azul",
+                Propietario = "Propietario2",
+                Latitud = 90,
+                Longitud = 14
+            });
+            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 999999,
+                Color = "Verde",
+                Propietario = "Propietario3",
+                Latitud = 64,
+                Longitud = 150
+            });
+            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 541287,
+                Color = "Rosado",
+                Propietario = "Propietario4",
+                Latitud = 46,
+                Longitud = 132
+            });
+            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 753159,
+                Color = "Magenta",
+                Propietario = "Propietario5",
+                Latitud = 68,
+                Longitud = -180
+            }); Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
+            {
+                Placa = 100000,
+                Color = "Rojo",
+                Propietario = "Propietario1",
+                Latitud = -82,
+                Longitud = -55
+            });
+            return View(Data.Instance.Arbol23_CarroPlaca);
         }
 
         // GET: CarroController/Details/5
