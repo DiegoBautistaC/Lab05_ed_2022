@@ -7,7 +7,12 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New |</a>
+    <a class="font-weight-bold">Para cargar archivo</a>
+    <form class="text-center" asp-controller="Home" asp-action="CargarArchivo2_3" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Cargar</button>
+    </form>
 </p>
 <table class="table">
     <thead>

@@ -69,39 +69,5 @@ namespace Lab05_ed_2022.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        [HttpPost]
-        public IActionResult CargarArchivo2_3(IFormFile file, [FromServices] IHostingEnvironment hosting)
-        {
-            if (file != null)
-            {
-               
-                string fileName = $"{hosting.WebRootPath}\\Files\\{file.FileName}";
-                using (FileStream streamFile = System.IO.File.Create(fileName))
-                {
-                    file.CopyTo(streamFile);
-                    streamFile.Flush();
-                }
-                var path = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Files"}" + "\\" + file.FileName;
-                using (var reader = new StreamReader(path))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
-                    csv.Read();
-                    csv.ReadHeader();
-                    while (csv.Read())
-                    {
-                        var carro = csv.GetRecord<CarroModel>();
-                        Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
-                        
-                    }
-                }
-               
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
     }
 }

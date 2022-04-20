@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Lab05_ed_2022.Helpers;
 
 namespace Lab05_ed_2022.Models
 {
@@ -34,5 +35,11 @@ namespace Lab05_ed_2022.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "La {0} es requerida.")]
         [Range(-180, 180, ErrorMessage = "La latitud es un número entre -180 y 180.")]
         public int Longitud { get; set; }
+
+        public static bool Guardar23(CarroModel carro)
+        {
+            Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
+            return true;
+        }
     }
 }
