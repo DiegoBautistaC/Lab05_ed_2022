@@ -22,6 +22,6 @@ namespace Lab05_ed_2022.Helpers
                 return _instance;
             }
         }
-        public Arbol2_3<CarroModel> Arbol23_CarroPlaca = new Arbol2_3<CarroModel>((CarroModel carro1, CarroModel carro2) => { return carro1.Placa - carro2.Placa; });
+        public Arbol2_3<CarroModel> Arbol23_CarroPlaca = new Arbol2_3<CarroModel>((CarroModel carro1, CarroModel carro2) => { return carro1.Placa - carro2.Placa; }, (int carro1, CarroModel carro2) => carro1 - carro2.Placa);
     }
 }

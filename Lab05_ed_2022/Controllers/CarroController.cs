@@ -69,9 +69,9 @@ namespace Lab05_ed_2022.Controllers
         }
 
         // GET: CarroController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int placa)
         {
-            return View();
+            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(placa));
         }
 
         // GET: CarroController/Create
