@@ -317,8 +317,51 @@ namespace ArbolesMulticamino
 
         T Encontrar(int llave, ref Nodo2_3<T> raizActual)
         {
-            int posicion = this.PosicionInsercion(llave);
-            return();
+            int posicion = this.PosicionInsercion(llave, raizActual);
+            if (posicion == 0)
+            {
+                if (this.Comparador2(llave, raizActual.Menor ) == 0)
+                {
+                    return raizActual.Menor;
+                }
+                else
+                {
+                    return raizActual.Mayor;
+                }
+            }
+            else if (posicion == 1)
+            {
+                if (raizActual.Izquierdo != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Izquierdo);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            else if (posicion == 2)
+            {
+                if (raizActual.Medio != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Medio);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            else
+            {
+                if (raizActual.Derecho != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Derecho);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
         }
 
         void Leer(Nodo2_3 <T> raizActual, ref Queue<T> cola)
