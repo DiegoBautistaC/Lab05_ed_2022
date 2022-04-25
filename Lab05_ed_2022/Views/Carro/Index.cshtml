@@ -57,9 +57,9 @@
                         @Html.DisplayFor(modelItem => item.Longitud)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { placa = item.Placa }) |
-                        @Html.ActionLink("Details", "Details", new { placa = item.Placa }) |
-                        @Html.ActionLink("Delete", "Delete", new { placa = item.Placa })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Placa }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Placa }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Placa })
                     </td>
                 </tr>
             }

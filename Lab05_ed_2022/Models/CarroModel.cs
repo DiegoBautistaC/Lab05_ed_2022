@@ -41,5 +41,13 @@ namespace Lab05_ed_2022.Models
             Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
             return true;
         }
+
+        public static bool Editar(int placa, int nuevaLatitud, int nuevaLongitud)
+        {
+            var carro = Data.Instance.Arbol23_CarroPlaca.Encontrar(placa);
+            carro.Latitud = nuevaLatitud;
+            carro.Longitud = nuevaLongitud;
+            return true;
+        }
     }
 }

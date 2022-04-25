@@ -69,9 +69,9 @@ namespace Lab05_ed_2022.Controllers
         }
 
         // GET: CarroController/Details/5
-        public ActionResult Details(int placa)
+        public ActionResult Details(int id)
         {
-            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(placa));
+            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(id));
         }
 
         // GET: CarroController/Create
@@ -110,7 +110,7 @@ namespace Lab05_ed_2022.Controllers
         // GET: CarroController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(id));
         }
 
         // POST: CarroController/Edit/5
@@ -120,7 +120,12 @@ namespace Lab05_ed_2022.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var validacion = CarroModel.Editar(id, Convert.ToInt32(collection["Latitud"]), Convert.ToInt32(collection["Longitud"]));
+                if (validacion)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
             catch
             {
