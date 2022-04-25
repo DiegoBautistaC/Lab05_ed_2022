@@ -59,6 +59,7 @@ namespace ArbolesMulticamino
                             raizActual.Mayor = raizActual.Menor;
                             raizActual.Menor = valor;
                             raizActual.MayorLleno = true;
+                            insertado = true;
                         }
                         else
                         {
@@ -78,6 +79,7 @@ namespace ArbolesMulticamino
                         {
                             raizActual.Mayor = valor;
                             raizActual.MayorLleno = true;
+                            insertado = true;
                         }
                         else
                         {
