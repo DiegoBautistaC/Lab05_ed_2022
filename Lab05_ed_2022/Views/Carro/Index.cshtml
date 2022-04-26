@@ -1,30 +1,23 @@
 ﻿@model IEnumerable<Lab05_ed_2022.Models.CarroModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Indice";
 }
 
-<h1>Index</h1>
+<h1>Listado vehículos</h1>
 
 <p>
-    <a asp-action="Create">Create New |</a>
-    <a class="font-weight-bold">Para cargar archivo</a>
-    <form class="text-center" asp-controller="Carro" asp-action="CargarArchivo2_3" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">Cargar</button>
-    </form>
+    <a asp-action="Create">Agregar nuevo Vehículo</a>
 </p>
+<form asp-controller="Carro" asp-action="CargarArchivo2_3" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Cargar</button>
+</form>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>
                 @Html.DisplayNameFor(model => model.Placa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Propietario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Latitud)
@@ -36,29 +29,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Placa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Propietario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitud)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @if (Model != null)
+         {
+            foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Placa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Latitud)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Longitud)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Placa }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Placa }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Placa })
+                    </td>
+                </tr>
+            }
+         }
+
     </tbody>
 </table>

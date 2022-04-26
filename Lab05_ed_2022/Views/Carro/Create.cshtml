@@ -1,12 +1,11 @@
 ﻿@model Lab05_ed_2022.Models.CarroModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear";
 }
 
-<h1>Create</h1>
+<h1>Agregando un nuevo vehículo</h1>
 
-<h4>CarroModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -44,8 +43,17 @@
     </div>
 </div>
 
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    window.onload = function () {
+        alert("@ViewBag.Message");
+    }
+    </script>
+}
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {

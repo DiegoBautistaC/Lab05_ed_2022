@@ -18,60 +18,13 @@ namespace Lab05_ed_2022.Controllers
         // GET: CarroController
         public ActionResult Index()
         {
-            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 366452,
-                Color = "Rojo",
-                Propietario = "Propietario1",
-                Latitud = 54,
-                Longitud = 145
-            });
-            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 123456,
-                Color = "Azul",
-                Propietario = "Propietario2",
-                Latitud = 90,
-                Longitud = 14
-            });
-            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 999999,
-                Color = "Verde",
-                Propietario = "Propietario3",
-                Latitud = 64,
-                Longitud = 150
-            });
-            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 541287,
-                Color = "Rosado",
-                Propietario = "Propietario4",
-                Latitud = 46,
-                Longitud = 132
-            });
-            Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 753159,
-                Color = "Magenta",
-                Propietario = "Propietario5",
-                Latitud = 68,
-                Longitud = -180
-            }); Data.Instance.Arbol23_CarroPlaca.Insertar(new CarroModel
-            {
-                Placa = 100000,
-                Color = "Rojo",
-                Propietario = "Propietario1",
-                Latitud = -82,
-                Longitud = -55
-            });
             return View(Data.Instance.Arbol23_CarroPlaca);
         }
 
         // GET: CarroController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(id));
         }
 
         // GET: CarroController/Create
@@ -91,7 +44,7 @@ namespace Lab05_ed_2022.Controllers
                 {
                     Placa = Convert.ToInt32(collection["Placa"]),
                     Color = collection["Color"],
-                    Propietario = collection["Proietario"],
+                    Propietario = collection["Propietario"],
                     Latitud = Convert.ToInt32(collection["Latitud"]),
                     Longitud = Convert.ToInt32(collection["Longitud"])
                 });
@@ -99,6 +52,7 @@ namespace Lab05_ed_2022.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
+                ViewBag.Message = "No se ha podido ingresar el nuevo carro, verificar numero de placa";
                 return View();
             }
             catch
@@ -110,7 +64,7 @@ namespace Lab05_ed_2022.Controllers
         // GET: CarroController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(id));
         }
 
         // POST: CarroController/Edit/5
@@ -120,7 +74,12 @@ namespace Lab05_ed_2022.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var validacion = CarroModel.Editar(id, Convert.ToInt32(collection["Latitud"]), Convert.ToInt32(collection["Longitud"]));
+                if (validacion)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View();
             }
             catch
             {
@@ -154,7 +113,6 @@ namespace Lab05_ed_2022.Controllers
         {
             if (file != null)
             {
-
                 string fileName = $"{hosting.WebRootPath}\\Files\\{file.FileName}";
                 using (FileStream streamFile = System.IO.File.Create(fileName))
                 {
@@ -170,8 +128,10 @@ namespace Lab05_ed_2022.Controllers
                     while (csv.Read())
                     {
                         var carro = csv.GetRecord<CarroModel>();
-                        Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
-
+                        if (carro.Placa.ToString().Length == 6 && carro.Propietario.Length >= 6 && carro.Propietario.Length <= 25 && carro.Latitud >= -90 && carro.Latitud <= 90 && carro.Longitud >= -180 && carro.Longitud <= 180)
+                        {
+                            Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
+                        }
                     }
                 }
 
@@ -180,6 +140,33 @@ namespace Lab05_ed_2022.Controllers
             else
             {
                 return RedirectToAction(nameof(Index));
+            }
+        }
+
+        public ActionResult Buscar(int placa)
+        {
+            try
+            {
+                if (placa != 0)
+                {
+                    var vehiculo = Data.Instance.Arbol23_CarroPlaca.Encontrar(placa);
+                    if (vehiculo != null)
+                    {
+                        return View(vehiculo);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "No se ha encontrado al vehiculo con placa " + placa.ToString();
+                        return View();
+                    }
+                }
+                ViewBag.Message = "Debe ingresar una placa para buscar";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "Ha ocurrido un error inseperado.";
+                return View();
             }
         }
     }

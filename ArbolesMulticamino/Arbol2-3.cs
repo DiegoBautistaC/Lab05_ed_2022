@@ -17,9 +17,14 @@ namespace ArbolesMulticamino
 
         public Delegado Comparador;
 
-        public Arbol2_3(Delegado unComparador)
+        public delegate int Delegado2(int valor1, T valor2);
+
+        public Delegado2 Comparador2;
+
+        public Arbol2_3(Delegado unComparador, Delegado2 unComparador2)
         {
             this.Comparador = unComparador;
+            this.Comparador2 = unComparador2;
             Raiz = null;
         }
 
@@ -54,6 +59,7 @@ namespace ArbolesMulticamino
                             raizActual.Mayor = raizActual.Menor;
                             raizActual.Menor = valor;
                             raizActual.MayorLleno = true;
+                            insertado = true;
                         }
                         else
                         {
@@ -73,6 +79,7 @@ namespace ArbolesMulticamino
                         {
                             raizActual.Mayor = valor;
                             raizActual.MayorLleno = true;
+                            insertado = true;
                         }
                         else
                         {
@@ -210,6 +217,44 @@ namespace ArbolesMulticamino
             }
         }
 
+        int PosicionInsercion(int llave, Nodo2_3<T> raiz)
+        {
+            if (!raiz.MayorLleno)
+            {
+                if (this.Comparador2(llave, raiz.Menor) < 0)
+                {
+                    return 1;
+                }
+                else if (this.Comparador2(llave, raiz.Menor) > 0)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                if (this.Comparador2(llave, raiz.Menor) == 0 || this.Comparador2(llave, raiz.Mayor) == 0)
+                {
+                    return 0;
+                }
+                else if (this.Comparador2(llave, raiz.Menor) < 0)
+                {
+                    return 1;
+                }
+                else if (this.Comparador2(llave, raiz.Menor) > 0 && this.Comparador2(llave, raiz.Mayor) < 0)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+        }
+
         Nodo2_3<T> NodoOverflow(T valor, Nodo2_3<T> raiz, int posicion)
         {
             Nodo2_3<T> raizOverflow = new Nodo2_3<T>();
@@ -266,6 +311,64 @@ namespace ArbolesMulticamino
 
             return raizOverflow;
         }
+            
+        public T Encontrar(int llave)
+        {
+            if (this.Raiz == null)
+            {
+                return default(T);
+            }
+            return this.Encontrar(llave, ref this.Raiz);
+        }
+
+        T Encontrar(int llave, ref Nodo2_3<T> raizActual)
+        {
+            int posicion = this.PosicionInsercion(llave, raizActual);
+            if (posicion == 0)
+            {
+                if (this.Comparador2(llave, raizActual.Menor ) == 0)
+                {
+                    return raizActual.Menor;
+                }
+                else
+                {
+                    return raizActual.Mayor;
+                }
+            }
+            else if (posicion == 1)
+            {
+                if (raizActual.Izquierdo != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Izquierdo);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            else if (posicion == 2)
+            {
+                if (raizActual.Medio != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Medio);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            else
+            {
+                if (raizActual.Derecho != null)
+                {
+                    return this.Encontrar(llave, ref raizActual.Derecho);
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+        }
 
         void Leer(Nodo2_3 <T> raizActual, ref Queue<T> cola)
         {
@@ -308,5 +411,4 @@ namespace ArbolesMulticamino
             throw new NotImplementedException();
         }
     }
-
 }
