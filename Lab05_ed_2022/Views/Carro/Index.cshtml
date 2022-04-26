@@ -1,30 +1,23 @@
 ﻿@model IEnumerable<Lab05_ed_2022.Models.CarroModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Indice";
 }
 
-<h1>Index</h1>
+<h1>Listado vehículos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
-
-    <form class="text-center" asp-controller="Carro" asp-action="CargarArchivo2_3" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">Cargar</button>
-    </form>
+    <a asp-action="Create">Agregar nuevo Vehículo</a>
 </p>
+<form asp-controller="Carro" asp-action="CargarArchivo2_3" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Cargar</button>
+</form>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>
                 @Html.DisplayNameFor(model => model.Placa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Propietario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Latitud)
@@ -37,18 +30,12 @@
     </thead>
     <tbody>
         @if (Model != null)
-        {
+         {
             foreach (var item in Model)
             {
-                <tr>
+                <tr class="text-center">
                     <td>
                         @Html.DisplayFor(modelItem => item.Placa)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Color)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Propietario)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Latitud)
@@ -63,7 +50,7 @@
                     </td>
                 </tr>
             }
-        }
+         }
 
     </tbody>
 </table>

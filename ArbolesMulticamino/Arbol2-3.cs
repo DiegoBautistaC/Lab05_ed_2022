@@ -314,6 +314,10 @@ namespace ArbolesMulticamino
             
         public T Encontrar(int llave)
         {
+            if (this.Raiz == null)
+            {
+                return default(T);
+            }
             return this.Encontrar(llave, ref this.Raiz);
         }
 

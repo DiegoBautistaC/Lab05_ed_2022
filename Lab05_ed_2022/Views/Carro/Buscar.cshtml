@@ -1,0 +1,72 @@
+﻿@model Lab05_ed_2022.Models.CarroModel
+
+@{
+    ViewData["Title"] = "Buscar";
+}
+
+<h1>Búsqueda de vehículos</h1>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Placa: @Html.TextBox("Placa") <br /><br />
+        <input type="submit" value="Buscar vehículo" />
+    </p>
+}
+<br />
+
+@if (Model != null)
+{
+    <div>
+        <h4>Placa Buscada: @Html.DisplayFor(model => model.Placa)</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Placa)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Placa)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Color)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Color)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Propietario)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Propietario)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Latitud)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Latitud)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Longitud)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Longitud)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Placa })
+    </div>
+}
+
+@if (ViewBag.Message != null)
+{
+<script type="text/javascript">
+    window.onload = function () {
+        alert("@ViewBag.Message");
+    }
+</script>
+}
+
+<div>
+    <a asp-action="Index">Regresar</a>
+</div>

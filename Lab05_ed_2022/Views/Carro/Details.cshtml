@@ -1,14 +1,12 @@
 ﻿@model Lab05_ed_2022.Models.CarroModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles";
 }
 
-<h1>Details</h1>
+<h1>Detalles del carro</h1>
 
 <div>
-    <h4>CarroModel</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Placa)
@@ -43,6 +41,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { placa = Model.Placa }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Placa }) |
+    <a asp-action="Index">Regresar</a>
 </div>

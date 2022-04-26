@@ -52,6 +52,7 @@ namespace Lab05_ed_2022.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
+                ViewBag.Message = "No se ha podido ingresar el nuevo carro, verificar numero de placa";
                 return View();
             }
             catch
@@ -127,8 +128,10 @@ namespace Lab05_ed_2022.Controllers
                     while (csv.Read())
                     {
                         var carro = csv.GetRecord<CarroModel>();
-                        Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
-
+                        if (carro.Placa.ToString().Length == 6 && carro.Propietario.Length >= 6 && carro.Propietario.Length <= 25 && carro.Latitud >= -90 && carro.Latitud <= 90 && carro.Longitud >= -180 && carro.Longitud <= 180)
+                        {
+                            Data.Instance.Arbol23_CarroPlaca.Insertar(carro);
+                        }
                     }
                 }
 
@@ -137,6 +140,33 @@ namespace Lab05_ed_2022.Controllers
             else
             {
                 return RedirectToAction(nameof(Index));
+            }
+        }
+
+        public ActionResult Buscar(int placa)
+        {
+            try
+            {
+                if (placa != 0)
+                {
+                    var vehiculo = Data.Instance.Arbol23_CarroPlaca.Encontrar(placa);
+                    if (vehiculo != null)
+                    {
+                        return View(vehiculo);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "No se ha encontrado al vehiculo con placa " + placa.ToString();
+                        return View();
+                    }
+                }
+                ViewBag.Message = "Debe ingresar una placa para buscar";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "Ha ocurrido un error inseperado.";
+                return View();
             }
         }
     }
