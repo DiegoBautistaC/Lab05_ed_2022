@@ -13,6 +13,8 @@ namespace ArbolesMulticamino
 
         public bool MayorLleno { get; set; }
 
+        public bool MenorLleno { get; set; }
+
         public Nodo2_3<T> Izquierdo;
 
         public Nodo2_3<T> Medio;
@@ -24,6 +26,7 @@ namespace ArbolesMulticamino
             Menor = default(T);
             Mayor = default(T);
             MayorLleno = false;
+            MenorLleno = false;
             Izquierdo = null;
             Derecho = null;
             Medio = null;
@@ -35,6 +38,7 @@ namespace ArbolesMulticamino
             Menor = menor;
             Mayor = default(T);
             MayorLleno = false;
+            MenorLleno = true;
             Izquierdo = null;
             Derecho = null;
             Medio = null;
