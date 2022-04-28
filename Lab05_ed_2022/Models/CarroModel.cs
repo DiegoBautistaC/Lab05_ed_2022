@@ -54,5 +54,10 @@ namespace Lab05_ed_2022.Models
             carro.Longitud = nuevaLongitud;
             return true;
         }
+
+        public static bool Remover(int placa)
+        {
+            return Data.Instance.Arbol23_CarroPlaca.Remover(placa);
+        }
     }
 }
