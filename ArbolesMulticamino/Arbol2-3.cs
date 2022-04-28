@@ -43,6 +43,7 @@ namespace ArbolesMulticamino
                 nuevaRaiz.Menor = valor;
                 nuevaRaiz.MenorLleno = true;
                 raizActual = nuevaRaiz;
+                insertado = true;
             }
             else
             {
@@ -254,7 +255,8 @@ namespace ArbolesMulticamino
         {
             int posicion = this.PosicionInsercion(llave, raizActual);
             T aux = default(T);
-            bool auxLleno = false;
+            bool auxLlenoDerecha = false;
+            bool auxLlenoIzquierda = false;
 
             if (posicion == 1) // La llave podría encontrarse en el subarbol IZQUIERDO
             {
@@ -319,14 +321,16 @@ namespace ArbolesMulticamino
                 {
                     if (this.Comparador2(llave, raizActual.Menor) == 0) // La llave es el valor MENOR del nodo
                     {
-                        raizActual.Menor = this.CambiarMayorDeLosMenores(llave, ref raizActual.Izquierdo);
+                        aux = this.CambiarMayorDeLosMenores(llave, ref raizActual.Izquierdo);
+                        raizActual.Menor = aux;
+                        auxLlenoIzquierda = true;
                         this.Remover(llave, ref raizActual.Izquierdo, ref eliminado);
                     }
                     else // La llave es el valor MAYOR del nodo
                     {
                         aux = this.CambiarMayorDeLosMenores(llave, ref raizActual.Medio);
                         raizActual.Mayor = aux;
-                        auxLleno = true;
+                        auxLlenoDerecha = true;
                         this.Remover(llave, ref raizActual.Medio, ref eliminado);
                     }
                 }
@@ -334,7 +338,7 @@ namespace ArbolesMulticamino
 
             if (raizActual.Izquierdo != null) // La verificación de nodos vacios se realiza en los niveles superiores al nodo hoja donde se eliminó
             {
-                posicion = this.PosicionInsercion(llave, raizActual, aux, auxLleno);
+                posicion = this.PosicionInsercion(llave, raizActual, aux, auxLlenoDerecha, auxLlenoIzquierda);
 
                 if (posicion == 1)
                 {
@@ -343,8 +347,8 @@ namespace ArbolesMulticamino
                         if (raizActual.Medio.MayorLleno) // Se puede realizar una rotación con el hermano MEDIO
                         {
                             raizActual.Izquierdo.Menor = raizActual.Menor;
-                            raizActual.Menor = raizActual.Medio.Menor;
                             raizActual.Izquierdo.MenorLleno = true;
+                            raizActual.Menor = raizActual.Medio.Menor;
                             raizActual.Izquierdo.Izquierdo = this.Flow;
                             raizActual.Izquierdo.Medio = raizActual.Medio.Izquierdo;
                             raizActual.Medio.Menor = raizActual.Medio.Mayor;
@@ -422,20 +426,20 @@ namespace ArbolesMulticamino
                                 this.Flow = null;
                                 eliminado = true;
                             }
-                            else // Debido a que el antecesor tiene los dos valores se puede realizar una rotacion especial
+                            else // Debido a que el antecesor tiene los dos valores se puede realizar una rotación especial
                             {
                                 raizActual.Medio.Menor = raizActual.Mayor;
                                 raizActual.Medio.MenorLleno = true;
                                 raizActual.Mayor = default(T);
                                 raizActual.MayorLleno = false;
                                 raizActual.Medio.Mayor = raizActual.Derecho.Menor;
+                                raizActual.Medio.MayorLleno = true;
                                 raizActual.Medio.Izquierdo = this.Flow;
                                 raizActual.Medio.Medio = raizActual.Derecho.Izquierdo;
                                 raizActual.Medio.Derecho = raizActual.Derecho.Medio;
                                 raizActual.Derecho = null;
                                 this.Flow = null;
                                 eliminado = true;
-                                
                             }
                         }
                         else // La creación de un nodo auxiliar debido al underflow que quedará
@@ -449,7 +453,6 @@ namespace ArbolesMulticamino
                             this.Flow = auxiliar;
                             raizActual.Menor = default(T);
                             raizActual.MenorLleno = false;
-                            
                         }
                     }
                 }
@@ -598,13 +601,24 @@ namespace ArbolesMulticamino
             }
         }
 
-        int PosicionInsercion(int llave, Nodo2_3<T> raiz, T aux, bool auxLleno)
+        int PosicionInsercion(int llave, Nodo2_3<T> raiz, T aux, bool auxLlenoDerecha, bool auxLlenoIzquierda)
         {
-            if (auxLleno)
+            if (auxLlenoDerecha)
             {
                 if (this.Comparador(aux, raiz.Mayor) == 0)
                 {
                     return 2;
+                }
+                else
+                {
+                    return this.PosicionInsercion(llave, raiz);
+                }
+            }
+            else if (auxLlenoIzquierda)
+            {
+                if (this.Comparador(aux, raiz.Menor) == 0)
+                {
+                    return 1;
                 }
                 else
                 {
