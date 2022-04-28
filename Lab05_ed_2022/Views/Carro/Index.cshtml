@@ -30,7 +30,7 @@
     </thead>
     <tbody>
         @if (Model != null)
-        {
+         {
             foreach (var item in Model)
             {
                 <tr class="text-center">
@@ -50,16 +50,7 @@
                     </td>
                 </tr>
             }
-        }
+         }
 
     </tbody>
 </table>
-
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-    window.onload = function () {
-        alert("@ViewBag.Message");
-    };
-    </script>
-}
