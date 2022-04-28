@@ -50,15 +50,13 @@ namespace Lab05_ed_2022.Controllers
                 });
                 if(validacion)
                 {
-                    ViewBag.Message = "El vehículo ha sido agregado correctamente.";
                     return RedirectToAction(nameof(Index));
                 }
-                ViewBag.Message = "No ha sido posible agregar al vehículo, verficar placa.";
+                ViewBag.Message = "No se ha podido ingresar el nuevo carro, verificar numero de placa";
                 return View();
             }
             catch
             {
-                ViewBag.Message = "Ha ocurrido un error inseperado.";
                 return View();
             }
         }
@@ -79,15 +77,12 @@ namespace Lab05_ed_2022.Controllers
                 var validacion = CarroModel.Editar(id, Convert.ToInt32(collection["Latitud"]), Convert.ToInt32(collection["Longitud"]));
                 if (validacion)
                 {
-                    ViewBag.Message = "Las coordenadas del vehículo han sido actualizadas correctamente.";
                     return RedirectToAction(nameof(Index));
                 }
-                ViewBag.Message = "No se ha podido actualizar las coordenadas correctamente.";
                 return View();
             }
             catch
             {
-                ViewBag.Message = "Ha ocurrido un error inseperado.";
                 return View();
             }
         }
@@ -95,7 +90,7 @@ namespace Lab05_ed_2022.Controllers
         // GET: CarroController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(Data.Instance.Arbol23_CarroPlaca.Encontrar(id));
+            return View();
         }
 
         // POST: CarroController/Delete/5
@@ -105,20 +100,10 @@ namespace Lab05_ed_2022.Controllers
         {
             try
             {
-                if (CarroModel.Remover(id))
-                {
-                    ViewBag.Message = "El vehículo ha sido borrado correctamente";
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ViewBag.Message = "No ha sido posible borrar al vehículo seleccionado";
-                    return RedirectToAction(nameof(Index));
-                }
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                ViewBag.Message = "Ha ocurrido un error inseperado.";
                 return View();
             }
         }
@@ -167,7 +152,6 @@ namespace Lab05_ed_2022.Controllers
                     var vehiculo = Data.Instance.Arbol23_CarroPlaca.Encontrar(placa);
                     if (vehiculo != null)
                     {
-                        ViewBag.Message = "Vehículo encontrado exitosamente.";
                         return View(vehiculo);
                     }
                     else

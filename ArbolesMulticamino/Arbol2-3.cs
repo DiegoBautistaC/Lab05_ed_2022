@@ -11,7 +11,7 @@ namespace ArbolesMulticamino
     {
         Nodo2_3<T> Raiz;
 
-        Nodo2_3<T> Flow;
+        Nodo2_3<T> OverFlow;
 
         public delegate int Delegado(T valor1, T valor2);
 
@@ -41,9 +41,7 @@ namespace ArbolesMulticamino
             {
                 Nodo2_3<T> nuevaRaiz = new Nodo2_3<T>();
                 nuevaRaiz.Menor = valor;
-                nuevaRaiz.MenorLleno = true;
                 raizActual = nuevaRaiz;
-                insertado = true;
             }
             else
             {
@@ -65,7 +63,7 @@ namespace ArbolesMulticamino
                         }
                         else
                         {
-                            this.Flow = this.NodoOverflow(valor, raizActual, posicion);
+                            this.OverFlow = this.NodoOverflow(valor, raizActual, posicion);
                         }
                     }
                 }
@@ -85,7 +83,7 @@ namespace ArbolesMulticamino
                         }
                         else
                         {
-                            this.Flow = this.NodoOverflow(valor, raizActual, posicion);
+                            this.OverFlow = this.NodoOverflow(valor, raizActual, posicion);
                         }
                     }
                 }
@@ -97,7 +95,7 @@ namespace ArbolesMulticamino
                     }
                     else
                     {
-                        this.Flow = this.NodoOverflow(valor, raizActual, posicion);
+                        this.OverFlow = this.NodoOverflow(valor, raizActual, posicion);
                     }
                 }
                 else
@@ -106,7 +104,7 @@ namespace ArbolesMulticamino
                 }
 
                 //Verificación del Overflow
-                if (Flow != null)
+                if (OverFlow != null)
                 {
                     posicion = this.PosicionInsercion(valor, raizActual);
                     if (raizActual == this.Raiz)
@@ -116,27 +114,27 @@ namespace ArbolesMulticamino
                             if (posicion == 1)
                             {
                                 raizActual.Mayor = raizActual.Menor;
-                                raizActual.Menor = this.Flow.Menor;
+                                raizActual.Menor = this.OverFlow.Menor;
                                 raizActual.Derecho = raizActual.Medio;
-                                raizActual.Izquierdo = this.Flow.Izquierdo;
-                                raizActual.Medio = this.Flow.Medio;
+                                raizActual.Izquierdo = this.OverFlow.Izquierdo;
+                                raizActual.Medio = this.OverFlow.Medio;
                             }
                             else
                             {
-                                raizActual.Mayor = this.Flow.Menor;
-                                raizActual.Medio = this.Flow.Izquierdo;
-                                raizActual.Derecho = this.Flow.Medio;
+                                raizActual.Mayor = this.OverFlow.Menor;
+                                raizActual.Medio = this.OverFlow.Izquierdo;
+                                raizActual.Derecho = this.OverFlow.Medio;
                             }
-                            this.Flow = null;
+                            this.OverFlow = null;
                             raizActual.MayorLleno = true;
                             insertado = true;
                         }
                         else
                         {
                             //Creación de una nueva raiz
-                            this.Flow = this.NodoOverflow(valor, raizActual, posicion);
-                            this.Raiz = this.Flow;
-                            this.Flow = null;
+                            this.OverFlow = this.NodoOverflow(valor, raizActual, posicion);
+                            this.Raiz = this.OverFlow;
+                            this.OverFlow = null;
                             insertado = true;
                         }
                     }
@@ -147,18 +145,18 @@ namespace ArbolesMulticamino
                             if (posicion == 1)
                             {
                                 raizActual.Mayor = raizActual.Menor;
-                                raizActual.Menor = this.Flow.Menor;
+                                raizActual.Menor = this.OverFlow.Menor;
                                 raizActual.Derecho = raizActual.Medio;
-                                raizActual.Izquierdo = this.Flow.Izquierdo;
-                                raizActual.Medio = this.Flow.Medio;
+                                raizActual.Izquierdo = this.OverFlow.Izquierdo;
+                                raizActual.Medio = this.OverFlow.Medio;
                             }
                             else
                             {
-                                raizActual.Mayor = this.Flow.Menor;
-                                raizActual.Medio = this.Flow.Izquierdo;
-                                raizActual.Derecho = this.Flow.Medio;
+                                raizActual.Mayor = this.OverFlow.Menor;
+                                raizActual.Medio = this.OverFlow.Izquierdo;
+                                raizActual.Derecho = this.OverFlow.Medio;
                             }
-                            this.Flow = null;
+                            this.OverFlow = null;
                             raizActual.MayorLleno = true;
                             insertado = true;
                         }
@@ -167,354 +165,10 @@ namespace ArbolesMulticamino
                             //Validación que no se encuentre en una hoja
                             if (raizActual.Izquierdo != null && raizActual.Medio != null)
                             {
-                                this.Flow = this.NodoOverflow(valor, raizActual, posicion);
+                                this.OverFlow = this.NodoOverflow(valor, raizActual, posicion);
                             }
                         }
                     }
-                }
-            }
-        }
-
-        Nodo2_3<T> NodoOverflow(T valor, Nodo2_3<T> raiz, int posicion)
-        {
-            Nodo2_3<T> raizOverflow = new Nodo2_3<T>();
-            if (raiz.Izquierdo == null && raiz.Medio == null && raiz.Derecho == null)
-            {
-                if (posicion == 1)
-                {
-                    raizOverflow.Menor = raiz.Menor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = new Nodo2_3<T>(valor);
-                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
-                }
-                else if (posicion == 2)
-                {
-                    raizOverflow.Menor = valor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
-                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
-                }
-                else
-                {
-                    raizOverflow.Menor = raiz.Mayor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
-                    raizOverflow.Medio = new Nodo2_3<T>(valor);
-                }
-            }
-            else
-            {
-                if (posicion == 1)
-                {
-                    raizOverflow.Menor = raiz.Menor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = this.Flow;
-                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
-                    raizOverflow.Medio.Izquierdo = raiz.Medio;
-                    raizOverflow.Medio.Medio = raiz.Derecho;
-                }
-                else if (posicion == 2)
-                {
-                    raizOverflow.Menor = this.Flow.Menor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
-                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
-                    raizOverflow.Izquierdo.Izquierdo = raiz.Izquierdo;
-                    raizOverflow.Izquierdo.Medio = this.Flow.Izquierdo;
-                    raizOverflow.Medio.Izquierdo = this.Flow.Medio;
-                    raizOverflow.Medio.Medio = raiz.Derecho;
-                }
-                else
-                {
-                    raizOverflow.Menor = raiz.Mayor;
-                    raizOverflow.MenorLleno = true;
-                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
-                    raizOverflow.Medio = this.Flow;
-                    raizOverflow.Izquierdo.Izquierdo = raiz.Izquierdo;
-                    raizOverflow.Izquierdo.Medio = raiz.Medio;
-                }
-            }
-
-            return raizOverflow;
-        }
-
-        public bool Remover(int llave)
-        {
-            bool eliminado = new bool();
-            this.Remover(llave, ref this.Raiz, ref eliminado);
-            if (!this.Raiz.MenorLleno)
-            {
-                this.Raiz = this.Flow;
-                this.Flow = null;
-                eliminado = true;
-            }
-            return eliminado;
-        }
-
-        void Remover(int llave, ref Nodo2_3<T> raizActual, ref bool eliminado)
-        {
-            int posicion = this.PosicionInsercion(llave, raizActual);
-            T aux = default(T);
-            bool auxLlenoDerecha = false;
-            bool auxLlenoIzquierda = false;
-
-            if (posicion == 1) // La llave podría encontrarse en el subarbol IZQUIERDO
-            {
-                if (raizActual.Izquierdo != null)
-                {
-                    this.Remover(llave, ref raizActual.Izquierdo, ref eliminado);
-                }
-                else // No encontró la llave
-                {
-                    eliminado = false;
-                }
-            }
-            else if (posicion == 2) // La llave podría encontrarse en el subarbol MEDIO
-            {
-                if (raizActual.Medio != null)
-                {
-                    this.Remover(llave, ref raizActual.Medio, ref eliminado);
-                }
-                else // No encontró la llave
-                {
-                    eliminado = false;
-                }
-            }
-            else if (posicion == 3) // La lave podría encontrarse en el subarbol DERECHO
-            {
-                if (raizActual.Derecho != null)
-                {
-                    this.Remover(llave, ref raizActual.Derecho, ref eliminado);
-                }
-                else // No encontró la llave
-                {
-                    eliminado = false;
-                }
-            }
-            else //La llave se encuentra en la raiz actual
-            {
-                if (raizActual.Izquierdo == null) // La llave se encuentra en un nodo hoja
-                {
-                    if (this.Comparador2(llave, raizActual.Menor) == 0)
-                    {
-                        if (raizActual.MayorLleno) // Como es nodo hoja y tiene ambos valores se elimina el menor y cambia al mayor de lugar y el proceso finaliza
-                        {
-                            raizActual.Menor = raizActual.Mayor;
-                            raizActual.Mayor = default(T);
-                            raizActual.MayorLleno = false;
-                            eliminado = true;
-                        }
-                        else // El nodo queda VACIO
-                        {
-                            raizActual.Menor = default(T);
-                            raizActual.MenorLleno = false;
-                        }
-                    }
-                    else // Como es nodo hoja de los dos valores que tiene se elimina el mayor el proceso se acaba
-                    {
-                        raizActual.Mayor = default(T);
-                        raizActual.MayorLleno = false;
-                        eliminado = true;
-                    }
-                }
-                else // La llave se encuentra en un nodo intermedio
-                {
-                    if (this.Comparador2(llave, raizActual.Menor) == 0) // La llave es el valor MENOR del nodo
-                    {
-                        aux = this.CambiarMayorDeLosMenores(llave, ref raizActual.Izquierdo);
-                        raizActual.Menor = aux;
-                        auxLlenoIzquierda = true;
-                        this.Remover(llave, ref raizActual.Izquierdo, ref eliminado);
-                    }
-                    else // La llave es el valor MAYOR del nodo
-                    {
-                        aux = this.CambiarMayorDeLosMenores(llave, ref raizActual.Medio);
-                        raizActual.Mayor = aux;
-                        auxLlenoDerecha = true;
-                        this.Remover(llave, ref raizActual.Medio, ref eliminado);
-                    }
-                }
-            }
-
-            if (raizActual.Izquierdo != null) // La verificación de nodos vacios se realiza en los niveles superiores al nodo hoja donde se eliminó
-            {
-                posicion = this.PosicionInsercion(llave, raizActual, aux, auxLlenoDerecha, auxLlenoIzquierda);
-
-                if (posicion == 1)
-                {
-                    if (!raizActual.Izquierdo.MenorLleno) // El hijo IZQUIERDO quedó underflow
-                    {
-                        if (raizActual.Medio.MayorLleno) // Se puede realizar una rotación con el hermano MEDIO
-                        {
-                            raizActual.Izquierdo.Menor = raizActual.Menor;
-                            raizActual.Izquierdo.MenorLleno = true;
-                            raizActual.Menor = raizActual.Medio.Menor;
-                            raizActual.Izquierdo.Izquierdo = this.Flow;
-                            raizActual.Izquierdo.Medio = raizActual.Medio.Izquierdo;
-                            raizActual.Medio.Menor = raizActual.Medio.Mayor;
-                            raizActual.Medio.Mayor = default(T);
-                            raizActual.Medio.MayorLleno = false;
-                            raizActual.Medio.Izquierdo = raizActual.Medio.Medio;
-                            raizActual.Medio.Medio = raizActual.Medio.Derecho;
-                            raizActual.Medio.Derecho = null;
-                            this.Flow = null;
-                            eliminado = true;
-                        }
-                        else
-                        {
-                            if (raizActual.MayorLleno) // Rotación que sucede con un nodo que posee tres hijos
-                            {
-                                Nodo2_3<T> auxiliar = new Nodo2_3<T>(raizActual.Mayor);
-                                auxiliar.Izquierdo = new Nodo2_3<T>(raizActual.Menor);
-                                auxiliar.Izquierdo.Mayor = raizActual.Medio.Menor;
-                                auxiliar.Izquierdo.MayorLleno = true;
-                                auxiliar.Izquierdo.Izquierdo = this.Flow;
-                                auxiliar.Izquierdo.Medio = raizActual.Medio.Izquierdo;
-                                auxiliar.Izquierdo.Derecho = raizActual.Medio.Medio;
-                                auxiliar.Medio = raizActual.Derecho;
-                                raizActual = auxiliar;
-                                this.Flow = null;
-                                eliminado = true;
-                            }
-                            else // La creación de un nodo auxiliar debido al underflow que quedará
-                            {
-                                Nodo2_3<T> auxiliar = new Nodo2_3<T>(raizActual.Menor);
-                                auxiliar.Mayor = raizActual.Medio.Menor;
-                                auxiliar.MayorLleno = true;
-                                auxiliar.Izquierdo = this.Flow;
-                                auxiliar.Medio = raizActual.Medio.Izquierdo;
-                                auxiliar.Derecho = raizActual.Medio.Medio;
-                                this.Flow = auxiliar;
-                                raizActual.Menor = default(T);
-                                raizActual.MenorLleno = false;
-                            }
-                        }
-                    }
-                }
-                else if (posicion == 2)
-                {
-                    if (!raizActual.Medio.MenorLleno) // El hijo MEDIO quedó underflow
-                    {
-                        if (raizActual.Izquierdo.MayorLleno) // Se puede realizar rotación con el hijo IZQUIERDO
-                        {
-                            raizActual.Medio.Menor = raizActual.Menor;
-                            raizActual.Menor = raizActual.Izquierdo.Mayor;
-                            raizActual.Medio.MenorLleno = true;
-                            raizActual.Izquierdo.Mayor = default(T);
-                            raizActual.Izquierdo.MayorLleno = false;
-                            raizActual.Medio.Medio = this.Flow;
-                            raizActual.Medio.Izquierdo = raizActual.Izquierdo.Derecho;
-                            raizActual.Izquierdo.Derecho = null;
-                            this.Flow = null;
-                            eliminado = true;
-                        }
-                        else if (raizActual.MayorLleno)
-                        {
-                            if (raizActual.Derecho.MayorLleno) // Se puede realizar rotación con el hijo DERECHO
-                            {
-                                raizActual.Medio.Menor = raizActual.Mayor;
-                                raizActual.Medio.MenorLleno = true;
-                                raizActual.Mayor = raizActual.Derecho.Menor;
-                                raizActual.Medio.Izquierdo = this.Flow;
-                                raizActual.Medio.Medio = raizActual.Derecho.Izquierdo;
-                                raizActual.Derecho.Menor = raizActual.Derecho.Mayor;
-                                raizActual.Derecho.Mayor = default(T);
-                                raizActual.Derecho.MayorLleno = false;
-                                raizActual.Derecho.Izquierdo = raizActual.Derecho.Medio;
-                                raizActual.Derecho.Medio = raizActual.Derecho.Derecho;
-                                raizActual.Derecho.Derecho = null;
-                                this.Flow = null;
-                                eliminado = true;
-                            }
-                            else // Debido a que el antecesor tiene los dos valores se puede realizar una rotación especial
-                            {
-                                raizActual.Medio.Menor = raizActual.Mayor;
-                                raizActual.Medio.MenorLleno = true;
-                                raizActual.Mayor = default(T);
-                                raizActual.MayorLleno = false;
-                                raizActual.Medio.Mayor = raizActual.Derecho.Menor;
-                                raizActual.Medio.MayorLleno = true;
-                                raizActual.Medio.Izquierdo = this.Flow;
-                                raizActual.Medio.Medio = raizActual.Derecho.Izquierdo;
-                                raizActual.Medio.Derecho = raizActual.Derecho.Medio;
-                                raizActual.Derecho = null;
-                                this.Flow = null;
-                                eliminado = true;
-                            }
-                        }
-                        else // La creación de un nodo auxiliar debido al underflow que quedará
-                        {
-                            Nodo2_3<T> auxiliar = new Nodo2_3<T>(raizActual.Izquierdo.Menor);
-                            auxiliar.Mayor = raizActual.Menor;
-                            auxiliar.MayorLleno = true;
-                            auxiliar.Izquierdo = raizActual.Izquierdo.Izquierdo;
-                            auxiliar.Medio = raizActual.Izquierdo.Medio;
-                            auxiliar.Derecho = this.Flow;
-                            this.Flow = auxiliar;
-                            raizActual.Menor = default(T);
-                            raizActual.MenorLleno = false;
-                        }
-                    }
-                }
-                else
-                {
-                    if (!raizActual.Derecho.MenorLleno) // El hijo DERECHO quedó underflow
-                    {
-                        if (raizActual.Medio.MayorLleno)
-                        {
-                            raizActual.Derecho.Menor = raizActual.Mayor;
-                            raizActual.Derecho.MenorLleno = true;
-                            raizActual.Mayor = raizActual.Medio.Mayor;
-                            raizActual.Medio.Mayor = default(T);
-                            raizActual.MayorLleno = false;
-                            raizActual.Derecho.Izquierdo = raizActual.Medio.Derecho;
-                            raizActual.Medio.Derecho = null;
-                            raizActual.Derecho.Medio = this.Flow;
-                            this.Flow = null;
-                            eliminado = true;
-                        }
-                        else
-                        {
-                            raizActual.Medio.Mayor = raizActual.Mayor;
-                            raizActual.Medio.MayorLleno = true;
-                            raizActual.Mayor = default(T);
-                            raizActual.MayorLleno = false;
-                            raizActual.Medio.Derecho = this.Flow;
-                            this.Flow = null;
-                            eliminado = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        //Recibe como parámetro al nodo donde necesita realizar la búsqueda del mayor de los menores según el caso
-        T CambiarMayorDeLosMenores(int llave, ref Nodo2_3<T> raiz)
-        {
-            if (raiz.MayorLleno) // Tiene valor MAYOR
-            {
-                if (raiz.Derecho != null) // El mayor de los menores se encuentra en el hijo DERECHO
-                {
-                    return this.CambiarMayorDeLosMenores(llave, ref raiz.Derecho);
-                }
-                else // El mayor de los menores es el valor MAYOR
-                {
-                    T aux = raiz.Mayor;
-                    raiz.Mayor = this.Encontrar(llave);
-                    return aux;
-                }
-            }
-            else // No tiene valor MAYOR
-            {
-                if (raiz.Medio != null) // El mayor de los menores se encuentra en el hijo MEDIO
-                {
-                    return this.CambiarMayorDeLosMenores(llave, ref raiz.Medio);
-                }
-                else // El amyor de los menores es el valor menor
-                {
-                    T aux = raiz.Menor;
-                    raiz.Menor = this.Encontrar(llave);
-                    return aux;
                 }
             }
         }
@@ -601,36 +255,63 @@ namespace ArbolesMulticamino
             }
         }
 
-        int PosicionInsercion(int llave, Nodo2_3<T> raiz, T aux, bool auxLlenoDerecha, bool auxLlenoIzquierda)
+        Nodo2_3<T> NodoOverflow(T valor, Nodo2_3<T> raiz, int posicion)
         {
-            if (auxLlenoDerecha)
+            Nodo2_3<T> raizOverflow = new Nodo2_3<T>();
+            if (raiz.Izquierdo == null && raiz.Medio == null && raiz.Derecho == null)
             {
-                if (this.Comparador(aux, raiz.Mayor) == 0)
+                if (posicion == 1)
                 {
-                    return 2;
+                    raizOverflow.Menor = raiz.Menor;
+                    raizOverflow.Izquierdo = new Nodo2_3<T>(valor);
+                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
+                }
+                else if (posicion == 2)
+                {
+                    raizOverflow.Menor = valor;
+                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
+                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
                 }
                 else
                 {
-                    return this.PosicionInsercion(llave, raiz);
-                }
-            }
-            else if (auxLlenoIzquierda)
-            {
-                if (this.Comparador(aux, raiz.Menor) == 0)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return this.PosicionInsercion(llave, raiz);
+                    raizOverflow.Menor = raiz.Mayor;
+                    raizOverflow.Izquierdo =  new Nodo2_3<T>(raiz.Menor);
+                    raizOverflow.Medio = new Nodo2_3<T>(valor);
                 }
             }
             else
             {
-                return this.PosicionInsercion(llave, raiz);
+                if (posicion == 1)
+                {
+                    raizOverflow.Menor = raiz.Menor;
+                    raizOverflow.Izquierdo = this.OverFlow;
+                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
+                    raizOverflow.Medio.Izquierdo = raiz.Medio;
+                    raizOverflow.Medio.Medio = raiz.Derecho;
+                }
+                else if (posicion == 2)
+                {
+                    raizOverflow.Menor = this.OverFlow.Menor;
+                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
+                    raizOverflow.Medio = new Nodo2_3<T>(raiz.Mayor);
+                    raizOverflow.Izquierdo.Izquierdo = raiz.Izquierdo;
+                    raizOverflow.Izquierdo.Medio = this.OverFlow.Izquierdo;
+                    raizOverflow.Medio.Izquierdo = this.OverFlow.Medio;
+                    raizOverflow.Medio.Medio = raiz.Derecho;
+                }
+                else
+                {
+                    raizOverflow.Menor = raiz.Mayor;
+                    raizOverflow.Izquierdo = new Nodo2_3<T>(raiz.Menor);
+                    raizOverflow.Medio = this.OverFlow;
+                    raizOverflow.Izquierdo.Izquierdo = raiz.Izquierdo;
+                    raizOverflow.Izquierdo.Medio = raiz.Medio;
+                }
             }
-        }
 
+            return raizOverflow;
+        }
+            
         public T Encontrar(int llave)
         {
             if (this.Raiz == null)

@@ -29,20 +29,10 @@
         </form>
     </div>
 </div>
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-    window.onload = function () {
-        alert("@ViewBag.Message");
-    };
-    </script>
-}
 
 <div>
     <a asp-action="Index">Regresar</a>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
